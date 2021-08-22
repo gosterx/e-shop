@@ -1,14 +1,14 @@
 import sbt._
 
 object Dependencies {
-  private val catsVersion = "2.6.1"
+  private val catsVersion       = "2.6.1"
   private val catsEffectVersion = "3.2.2"
-  private val scalatestVersion = "3.2.9"
+  private val scalatestVersion  = "3.2.9"
   private val enumeratumVersion = "1.6.1"
-  private val http4sVersion       = "0.23.0"
-  private val circeVersion        = "0.14.1"
+  private val http4sVersion     = "0.23.0"
+  private val circeVersion      = "0.14.1"
 
-  val cats = "org.typelevel" %% "cats-core" % catsVersion
+  val cats       = "org.typelevel" %% "cats-core"   % catsVersion
   val catsEffect = "org.typelevel" %% "cats-effect" % catsEffectVersion
 
   val enumeratum = "com.beachape" %% "enumeratum" % enumeratumVersion
