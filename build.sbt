@@ -1,5 +1,19 @@
-name := "e-shop"
+import Dependencies._
 
-version := "0.1"
+lazy val root = project
+  .in(file("."))
+  .settings(commonSettings: _*)
+  .settings(
+    name := "e-shop",
+    libraryDependencies ++= Seq(
+      cats,
+      catsEffect,
+      enumeratum,
+      scalatest
+    ) ++ circeLibs ++ http4sLibs
+  )
 
-scalaVersion := "2.13.6"
+lazy val commonSettings = Seq(
+  organization := "com.project.e-shop",
+  scalaVersion := "2.13.6"
+)
