@@ -9,8 +9,10 @@ lazy val root = project
       cats,
       catsEffect,
       enumeratum,
-      scalatest
-    ) ++ circeLibs ++ http4sLibs
+      scalatest,
+      postgresql,
+      log
+    ) ++ circeLibs ++ http4sLibs ++ doobieLibs
   )
 
 lazy val commonSettings = Seq(
