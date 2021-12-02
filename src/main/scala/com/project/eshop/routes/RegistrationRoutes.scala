@@ -4,6 +4,8 @@ import cats.effect.kernel.Async
 import cats.syntax.all._
 import com.project.eshop.service.{EmailAlreadyUse, LoginAlreadyUse, UserService}
 import com.project.eshop.codecs.Codecs._
+import com.project.eshop.domain.User
+import com.project.eshop.http.auth.SecuredRequestHandler
 import com.project.eshop.routes.dto.UserDTO.CreateUser
 import org.http4s.HttpRoutes
 import org.http4s.dsl.Http4sDsl
@@ -11,11 +13,11 @@ import org.http4s.circe.CirceEntityCodec._
 
 object RegistrationRoutes {
 
-  def of[F[_]: Async](service: UserService[F]): AppRoutes[F] = new AppRoutes[F] with Http4sDsl[F] {
+  def of[F[_]: Async](service: UserService[F], auth: SecuredRequestHandler[F, User]): AppRoutes[F] = new AppRoutes[F] with Http4sDsl[F] {
 
     override def prefixPath: String = "registration"
 
-    override protected def notAuthRoutes: HttpRoutes[F] = HttpRoutes.of {
+    val endpoints: HttpRoutes[F] = HttpRoutes.of{
       case req @ POST -> Root =>
         (for {
           userDTO <- req.as[CreateUser]
@@ -26,5 +28,6 @@ object RegistrationRoutes {
         }
     }
 
+    override protected def serviceRoutes: HttpRoutes[F] = endpoints
   }
 }

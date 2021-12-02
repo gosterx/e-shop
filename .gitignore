@@ -1,0 +1,5 @@
+.idea/
+/postgres-data
+/target/
+/*/target/
+/*/*/target/

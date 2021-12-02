@@ -1,23 +1,26 @@
 package com.project.eshop.repository
 
-import com.project.eshop.auth.User
-import com.project.eshop.routes.dto.UserDTO.CreateUser
+import com.project.eshop.domain.{User, UserWithAuthInfo}
+import com.project.eshop.routes.dto.UserDTO.{CreateUser, UserAuthInfo}
 import doobie.implicits._
 import doobie.ConnectionIO
+import doobie.util.fragment
 
 private object UserSQL {
-  val UserColumns = Seq("id", "login", "email", "last_name", "first_name")
+  val UserColumns = Seq("id", "username", "email", "role", "first_name", "last_name")
 
-  def insert(user: CreateUser) =
-    sql"INSERT INTO users (login, email, password, role, last_name, first_name) VALUES " ++
-      sql"(${user.login}, ${user.email}, ${user.password}, 2, ${user.lastName}, ${user.firstName})"
+  def insert(user: CreateUser): fragment.Fragment =
+    sql"INSERT INTO users (username, email, password, first_name, last_name) VALUES " ++
+      sql"(${user.username}, ${user.email}, ${user.password}, ${user.firstName}, ${user.lastName})"
 
   def select(userId: String) =
     sql"SELECT id, login, email, role, last_name, first_name FROM users WHERE id = $userId"
 
-  def selectLogins = sql"SELECT login FROM users"
+  def selectLogins = sql"SELECT username FROM users"
 
   def selectEmails = sql"SELECT email FROM users"
+
+  def selectUserAuthInfoByUsername(username: String) = sql"SELECT id, username, password FROM users WHERE username = $username"
 }
 
 trait UserRepository[F[_]] {
@@ -28,6 +31,8 @@ trait UserRepository[F[_]] {
   def selectLogins: F[List[String]]
 
   def selectEmails: F[List[String]]
+
+  def selectUserAuthInfoByUsername(login: String): F[Option[UserWithAuthInfo]]
 }
 
 object UserRepository {
@@ -43,5 +48,8 @@ object UserRepository {
 
     override def selectEmails: ConnectionIO[List[String]] =
       UserSQL.selectEmails.query[String].to[List]
+
+    override def selectUserAuthInfoByUsername(login: String): ConnectionIO[Option[UserWithAuthInfo]] =
+      UserSQL.selectUserAuthInfoByUsername(login).query[UserWithAuthInfo].option
   }
 }

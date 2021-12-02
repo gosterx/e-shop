@@ -3,6 +3,7 @@ import Dependencies._
 lazy val root = project
   .in(file("."))
   .settings(commonSettings: _*)
+  .settings(addCompilerPlugin("org.typelevel" % "kind-projector" % "0.13.0" cross CrossVersion.full))
   .settings(
     name := "e-shop",
     libraryDependencies ++= Seq(
@@ -10,9 +11,11 @@ lazy val root = project
       catsEffect,
       enumeratum,
       scalatest,
-      postgresql,
-      log
-    ) ++ circeLibs ++ http4sLibs ++ doobieLibs
+      postgres,
+      log,
+      reactor,
+      liquibase
+    ) ++ circeLibs ++ http4sLibs ++ doobieLibs ++ tsecLibs
   )
 
 lazy val commonSettings = Seq(

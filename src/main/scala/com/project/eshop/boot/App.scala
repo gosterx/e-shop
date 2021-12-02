@@ -1,7 +1,8 @@
 package com.project.eshop.boot
 
 import cats.effect.{Async, Resource, Sync}
-import com.project.eshop.boot.components.{HttpApi, RepositoryModule}
+import com.project.eshop.boot.components.{HttpApi, RepositoryModule, ServiceModule}
+import com.project.eshop.http.auth.{Authentication, SecuredRequestHandler}
 import org.http4s.server.Server
 import org.http4s.HttpApp
 import org.http4s.blaze.server.BlazeServerBuilder
@@ -16,12 +17,14 @@ object App {
 
   def run[F[_]: Async]: Resource[F, Server] =
     for {
-      transactor <- RepositoryModule.make
+      transactor <- RepositoryModule.make()
       serverPool <- Resource
         .make(Sync[F].delay(Executors.newCachedThreadPool()))(exec => Sync[F].delay(exec.shutdown()))
         .map(ExecutionContext.fromExecutorService)
       services = ServiceModule.make(transactor)
-      httpApp = HttpApi.of(services)
+      authenticator = new Authentication(services.authenticateService)
+      routeAuth = SecuredRequestHandler(authenticator)
+      httpApp = HttpApi.of(routeAuth, services)
       server <- server(8080, "localhost")(serverPool)(httpApp)
     } yield server
 
