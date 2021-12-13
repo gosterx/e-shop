@@ -1,6 +1,7 @@
 package com.project.eshop.service
 
 import cats.effect.Sync
+import cats.syntax.all._
 import com.project.eshop.domain.User
 import com.project.eshop.repository.TokenRepository
 import doobie.ConnectionIO

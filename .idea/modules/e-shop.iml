@@ -20,10 +20,14 @@
     <orderEntry type="library" name="sbt: com.beachape:enumeratum_2.13:1.6.1:jar" level="project" />
     <orderEntry type="library" name="sbt: com.chuusai:shapeless_2.13:2.3.7:jar" level="project" />
     <orderEntry type="library" name="sbt: com.comcast:ip4s-core_2.13:3.0.3:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.github.spotbugs:spotbugs-annotations:4.1.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.google.code.findbugs:jsr305:3.0.2:jar" level="project" />
     <orderEntry type="library" name="sbt: com.lambdaworks:scrypt:1.4.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.opentable.components:otj-pg-embedded:0.13.4:jar" level="project" />
     <orderEntry type="library" name="sbt: com.twitter:hpack:1.0.2:jar" level="project" />
     <orderEntry type="library" name="sbt: com.zaxxer:HikariCP:3.4.5:jar" level="project" />
     <orderEntry type="library" name="sbt: commons-codec:commons-codec:1.15:jar" level="project" />
+    <orderEntry type="library" name="sbt: commons-io:commons-io:2.8.0:jar" level="project" />
     <orderEntry type="library" name="sbt: io.circe:circe-core_2.13:0.14.1:jar" level="project" />
     <orderEntry type="library" name="sbt: io.circe:circe-generic-extras_2.13:0.14.1:jar" level="project" />
     <orderEntry type="library" name="sbt: io.circe:circe-generic_2.13:0.14.1:jar" level="project" />
@@ -42,6 +46,8 @@
     <orderEntry type="library" name="sbt: io.github.jmcardon:tsec-password_2.13:0.4.0:jar" level="project" />
     <orderEntry type="library" name="sbt: io.github.jmcardon:tsec-signatures_2.13:0.4.0:jar" level="project" />
     <orderEntry type="library" name="sbt: javax.xml.bind:jaxb-api:2.3.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.apache.commons:commons-compress:1.20:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.apache.commons:commons-lang3:3.11:jar" level="project" />
     <orderEntry type="library" name="sbt: org.bouncycastle:bcprov-jdk15on:1.68:jar" level="project" />
     <orderEntry type="library" name="sbt: org.checkerframework:checker-qual:3.5.0:jar" level="project" />
     <orderEntry type="library" name="sbt: org.http4s:blaze-core_2.13:0.15.1:jar" level="project" />
@@ -80,12 +86,14 @@
     <orderEntry type="library" name="sbt: org.scalatest:scalatest-wordspec_2.13:3.2.9:jar" level="project" />
     <orderEntry type="library" name="sbt: org.scalatest:scalatest_2.13:3.2.9:jar" level="project" />
     <orderEntry type="library" name="sbt: org.scodec:scodec-bits_2.13:1.1.27:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.slf4j:jcl-over-slf4j:1.7.30:jar" level="project" />
     <orderEntry type="library" name="sbt: org.slf4j:slf4j-api:1.7.32:jar" level="project" />
     <orderEntry type="library" name="sbt: org.tpolecat:doobie-core_2.13:1.0.0-M1:jar" level="project" />
     <orderEntry type="library" name="sbt: org.tpolecat:doobie-free_2.13:1.0.0-M1:jar" level="project" />
     <orderEntry type="library" name="sbt: org.tpolecat:doobie-hikari_2.13:1.0.0-M1:jar" level="project" />
     <orderEntry type="library" name="sbt: org.tpolecat:doobie-postgres_2.13:1.0.0-M1:jar" level="project" />
     <orderEntry type="library" name="sbt: org.tpolecat:typename_2.13:0.1.6:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.tukaani:xz:1.5:jar" level="project" />
     <orderEntry type="library" name="sbt: org.typelevel:case-insensitive_2.13:1.1.4:jar" level="project" />
     <orderEntry type="library" name="sbt: org.typelevel:cats-core_2.13:2.6.1:jar" level="project" />
     <orderEntry type="library" name="sbt: org.typelevel:cats-effect-kernel_2.13:3.2.2:jar" level="project" />

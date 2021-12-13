@@ -2,17 +2,12 @@ package com.project.eshop.routes
 
 import cats.effect.kernel.Async
 import cats.syntax.all._
+import com.project.eshop.codecs.Codecs.userEntityEncoder
 import com.project.eshop.domain.User
 import com.project.eshop.http.auth.SecuredRequestHandler
 import com.project.eshop.routes.dto.UserDTO.{CreateUser, UserAuthInfo}
-import com.project.eshop.service.{
-  EmailAlreadyUse,
-  IncorrectLogin,
-  IncorrectPassword,
-  LoginAlreadyUse,
-  LoginService,
-  UserService
-}
+import com.project.eshop.service.errors.{IncorrectLogin, IncorrectPassword}
+import com.project.eshop.service.{LoginService, UserService}
 import org.http4s.circe.CirceEntityCodec._
 import org.http4s.{HttpRoutes, ResponseCookie, SameSite}
 import org.http4s.dsl.Http4sDsl
@@ -28,8 +23,8 @@ object LoginRoutes {
       case req @ POST -> Root =>
         (for {
           authInfo <- req.as[UserAuthInfo]
-          token    <- service.login(authInfo)
-          res      <- Ok().map(_.addCookie(ResponseCookie("authToken", token, secure = true, sameSite = SameSite.None.some)))
+          result    <- service.login(authInfo)
+          res      <- Ok(result._2).map(_.addCookie(ResponseCookie("authToken", result._1)))
         } yield res).handleErrorWith {
           case IncorrectLogin    => BadRequest(IncorrectLogin.getMessage)
           case IncorrectPassword => BadRequest(IncorrectPassword.getMessage)

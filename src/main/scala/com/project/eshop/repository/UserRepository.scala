@@ -14,13 +14,18 @@ private object UserSQL {
       sql"(${user.username}, ${user.email}, ${user.password}, ${user.firstName}, ${user.lastName})"
 
   def select(userId: String) =
-    sql"SELECT id, login, email, role, last_name, first_name FROM users WHERE id = $userId"
+    sql"SELECT id, username, email, role, first_name, last_name FROM users WHERE  id= CAST($userId as int)"
+
+  def selectByUsername(username: String) =
+    sql"SELECT id, username, email, role, first_name, last_name FROM users WHERE  username= $username"
 
   def selectLogins = sql"SELECT username FROM users"
 
   def selectEmails = sql"SELECT email FROM users"
 
   def selectUserAuthInfoByUsername(username: String) = sql"SELECT id, username, password FROM users WHERE username = $username"
+
+  def selectAll = sql"SELECT id, username, email, role, first_name, last_name FROM users"
 }
 
 trait UserRepository[F[_]] {
@@ -33,6 +38,10 @@ trait UserRepository[F[_]] {
   def selectEmails: F[List[String]]
 
   def selectUserAuthInfoByUsername(login: String): F[Option[UserWithAuthInfo]]
+
+  def selectUserByUsername(username: String): F[Option[User]]
+
+  def selectAll: F[List[User]]
 }
 
 object UserRepository {
@@ -51,5 +60,11 @@ object UserRepository {
 
     override def selectUserAuthInfoByUsername(login: String): ConnectionIO[Option[UserWithAuthInfo]] =
       UserSQL.selectUserAuthInfoByUsername(login).query[UserWithAuthInfo].option
+
+    override def selectUserByUsername(username: String): ConnectionIO[Option[User]] =
+      UserSQL.selectByUsername(username).query[User].option
+
+    override def selectAll: ConnectionIO[List[User]] =
+      UserSQL.selectAll.query[User].to[List]
   }
 }

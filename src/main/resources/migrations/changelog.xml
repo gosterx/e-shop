@@ -10,5 +10,32 @@
     <changeSet author="asuslau" id="1633956997009-2">
         <tagDatabase tag="1"/>
     </changeSet>
-
+    <changeSet author="asuslau" id="1633956997009-3">
+        <sqlFile dbms="postgresql" path="2_change_orders_schema.sql" encoding="utf8" splitStatements="true"
+                 stripComments="true" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet author="asuslau" id="1633956997009-4">
+        <tagDatabase tag="2"/>
+    </changeSet>
+    <changeSet author="asuslau" id="1633956997009-5">
+        <sqlFile dbms="postgresql" path="3_drop_constraint.sql" encoding="utf8" splitStatements="true"
+                 stripComments="true" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet author="asuslau" id="1633956997009-6">
+        <tagDatabase tag="3"/>
+    </changeSet>
+    <changeSet author="asuslau" id="1633956997009-7">
+        <sqlFile dbms="postgresql" path="4_drop_unique_constraint.sql" encoding="utf8" splitStatements="true"
+                 stripComments="true" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet author="asuslau" id="1633956997009-8">
+        <tagDatabase tag="4"/>
+    </changeSet>
+    <changeSet author="asuslau" id="1633956997009-9">
+        <sqlFile dbms="postgresql" path="5_create_category_table.sql" encoding="utf8" splitStatements="true"
+                 stripComments="true" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet author="asuslau" id="1633956997009-10">
+        <tagDatabase tag="5"/>
+    </changeSet>
 </databaseChangeLog>

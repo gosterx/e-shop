@@ -14,7 +14,8 @@ lazy val root = project
       postgres,
       log,
       reactor,
-      liquibase
+      liquibase,
+      embeddedPostgres
     ) ++ circeLibs ++ http4sLibs ++ doobieLibs ++ tsecLibs
   )
 

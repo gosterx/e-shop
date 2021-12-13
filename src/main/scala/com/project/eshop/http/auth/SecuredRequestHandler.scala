@@ -17,7 +17,8 @@ class SecuredRequestHandler[F[_], I](val authenticationMiddleware: Authenticatio
   ): HttpRoutes[F] = {
     val middleware = AuthenticationMiddleware(Kleisli(authenticationMiddleware.extractAndValidate), onNotAuthenticated)
 
-    ME.handleErrorWith(middleware(service)) { _: Throwable =>
+    ME.handleErrorWith(middleware(service)) { e: Throwable =>
+      println(e.getMessage)
       Kleisli.liftF(OptionT.pure(cachedUnauthorized))
     }
   }

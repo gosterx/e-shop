@@ -2,11 +2,12 @@ package com.project.eshop.routes
 
 import cats.effect.kernel.Async
 import cats.syntax.all._
-import com.project.eshop.service.{EmailAlreadyUse, LoginAlreadyUse, UserService}
+import com.project.eshop.service.UserService
 import com.project.eshop.codecs.Codecs._
 import com.project.eshop.domain.User
 import com.project.eshop.http.auth.SecuredRequestHandler
 import com.project.eshop.routes.dto.UserDTO.CreateUser
+import com.project.eshop.service.errors.{EmailAlreadyUse, LoginAlreadyUse}
 import org.http4s.HttpRoutes
 import org.http4s.dsl.Http4sDsl
 import org.http4s.circe.CirceEntityCodec._

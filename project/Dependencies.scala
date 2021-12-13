@@ -11,6 +11,7 @@ object Dependencies {
   private val doobieVersion         = "1.0.0-M1"
   private val liquibaseVersion      = "4.5.0"
   private val postgresDriverVersion = "42.2.5"
+  private val embPostgresVersion      = "0.13.4"
 
   val cats       = "org.typelevel" %% "cats-core"   % catsVersion
   val catsEffect = "org.typelevel" %% "cats-effect" % catsEffectVersion
@@ -28,6 +29,8 @@ object Dependencies {
   val log = "ch.qos.logback" % "logback-classic" % "1.2.3"
 
   val reactor = "org.reactormonk" %% "cryptobits" % "1.3.1"
+
+  val embeddedPostgres = "com.opentable.components"          % "otj-pg-embedded"  % embPostgresVersion
 
   val circeLibs: Seq[ModuleID] = Seq(
     "io.circe" %% "circe-core",

@@ -10,7 +10,7 @@ object TokenSQL {
       sql"DO UPDATE SET token = $token WHERE tokens.user_id = CAST($userId as int)"
 
   def getUser(token: String) =
-    sql"SELECT id, login, email, last_name, first_name, role FROM users u JOIN tokens t ON t.user_id=u.id WHERE t.token=$token"
+    sql"SELECT id, username, email, role, first_name, last_name FROM users u JOIN tokens t ON t.user_id=u.id WHERE t.token=$token"
 }
 
 trait TokenRepository[F[_]] {

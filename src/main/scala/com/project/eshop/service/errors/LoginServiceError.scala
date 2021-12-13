@@ -1,4 +1,4 @@
-package com.project.eshop.service
+package com.project.eshop.service.errors
 
 abstract class LoginServiceError(message: String) extends Throwable(message)
 

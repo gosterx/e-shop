@@ -15,9 +15,10 @@ CREATE TABLE "products" (
     "description" VARCHAR(255) NOT NULL,
     "image" VARCHAR(255) NOT NULL,
     "categories" VARCHAR[],
-    "size" VARCHAR(255),
-    "color" VARCHAR(255),
-    "price" INT NOT NULL
+    "size" VARCHAR[],
+    "color" VARCHAR[],
+    "price" INT NOT NULL,
+    "in_stock" BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE "product_in_cart" (

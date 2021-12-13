@@ -12,10 +12,11 @@ object Codecs {
   implicit val userEncoder: Encoder[User] = (user: User) =>
     Json.obj(
       "id" -> user.id.asJson,
-      "login" -> user.username.asJson,
+      "username" -> user.username.asJson,
       "email" -> user.email.asJson,
-      "lastName" -> user.lastName.asJson,
-      "firstName" -> user.firstName.asJson
+      "role" -> user.role.asJson,
+      "firstName" -> user.firstName.asJson,
+      "lastName" -> user.lastName.asJson
     )
 
   implicit def userEntityEncoder[F[_]: Async]: EntityEncoder[F, User] = jsonEncoderOf[F, User]

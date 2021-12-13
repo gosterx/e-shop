@@ -5,8 +5,23 @@ import cats.implicits.toSemigroupKOps
 import cats.syntax.all._
 import com.project.eshop.domain.User
 import com.project.eshop.http.auth.SecuredRequestHandler
-import com.project.eshop.routes.{LoginRoutes, RegistrationRoutes}
-import com.project.eshop.service.{LoginService, UserService}
+import com.project.eshop.routes.{
+  CategoryRoutes,
+  CheckoutRoutes,
+  LoginRoutes,
+  ProductRoutes,
+  RegistrationRoutes,
+  UserRoutes,
+  ValidationRoutes
+}
+import com.project.eshop.service.{
+  CategoryService,
+  CheckoutService,
+  LoginService,
+  ProductService,
+  UserService,
+  ValidationService
+}
 import org.http4s
 import org.http4s.HttpRoutes
 import org.http4s.implicits.http4sKleisliResponseSyntaxOptionT
@@ -17,14 +32,35 @@ import scala.util.chaining._
 
 object HttpApi {
   def of[F[_]: Async](auth: SecuredRequestHandler[F, User], services: ServiceModule[F]): http4s.HttpApp[F] =
-    of(auth, services.userService, services.loginService)
+    of(
+      auth,
+      services.userService,
+      services.loginService,
+      services.productService,
+      services.validationService,
+      services.checkoutService,
+      services.categoryService
+    )
 
   def of[F[_]: Async](
     auth: SecuredRequestHandler[F, User],
     userService: UserService[F],
-    loginService: LoginService[F]
+    loginService: LoginService[F],
+    productService: ProductService[F],
+    validationService: ValidationService[F],
+    checkoutService: CheckoutService[F],
+    categoryService: CategoryService[F]
   ): http4s.HttpApp[F] = {
-    val routes = new AppRoutes[F](auth, userService, loginService).routes
+    val routes =
+      new AppRoutes[F](
+        auth,
+        userService,
+        loginService,
+        productService,
+        validationService,
+        checkoutService,
+        categoryService
+      ).routes
     of(routes)
   }
 
@@ -45,14 +81,24 @@ object HttpApi {
 private final case class AppRoutes[F[_]: Async](
   auth: SecuredRequestHandler[F, User],
   userService: UserService[F],
-  loginService: LoginService[F]
+  loginService: LoginService[F],
+  productService: ProductService[F],
+  validationService: ValidationService[F],
+  checkoutService: CheckoutService[F],
+  categoryService: CategoryService[F]
 ) {
   private val registrationRoutes = RegistrationRoutes.of(userService, auth)
   private val loginRoutes        = LoginRoutes.of(loginService, auth)
+  private val productRoutes      = ProductRoutes.of(productService, auth)
+  private val validationRoutes   = ValidationRoutes.of(validationService, auth)
+  private val checkoutRoutes     = CheckoutRoutes.of(checkoutService, auth)
+  private val categoryRoutes     = CategoryRoutes.of(categoryService, auth)
+  private val userRoutes         = UserRoutes.of(userService, auth)
 
-  val routes: HttpRoutes[F] = Seq(registrationRoutes, loginRoutes)
-    .map(_.routes())
-    .reduceLeft(_ <+> _)
-    .pipe(routes => Router("v1" -> routes))
-    .pipe(routes => Router("api" -> routes))
+  val routes: HttpRoutes[F] =
+    Seq(registrationRoutes, loginRoutes, productRoutes, validationRoutes, checkoutRoutes, categoryRoutes, userRoutes)
+      .map(_.routes())
+      .reduceLeft(_ <+> _)
+      .pipe(routes => Router("v1" -> routes))
+      .pipe(routes => Router("api" -> routes))
 }

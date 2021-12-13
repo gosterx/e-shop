@@ -4,6 +4,7 @@ import cats.effect.Sync
 import com.project.eshop.domain.User
 import com.project.eshop.repository.UserRepository
 import com.project.eshop.routes.dto.UserDTO.CreateUser
+import com.project.eshop.service.errors.{EmailAlreadyUse, LoginAlreadyUse}
 import doobie.ConnectionIO
 import doobie.implicits._
 import doobie.util.transactor.Transactor
@@ -12,6 +13,8 @@ import java.util.Base64
 
 trait UserService[F[_]] {
   def create(user: CreateUser): F[User]
+
+  def getUsers: F[List[User]]
 }
 
 object UserService {
@@ -29,5 +32,7 @@ object UserService {
             else Sync[ConnectionIO].pure()
           user <- userRepository.create(user.copy(password = Base64.getEncoder.encodeToString(user.password.getBytes)))
         } yield user).transact(transactor)
+
+      override def getUsers: F[List[User]] = userRepository.selectAll.transact(transactor)
     }
 }
