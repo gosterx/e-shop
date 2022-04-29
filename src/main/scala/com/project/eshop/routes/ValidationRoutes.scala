@@ -55,14 +55,27 @@ object ValidationRoutes {
             res      <- result.fold(Ok(ValidationError("")))(Ok(_))
           } yield res
 
-        case req @ POST -> Root / "confirmPassword" => {
+        case req @ POST -> Root / "confirmPassword" =>
           import org.http4s.circe.CirceEntityCodec.circeEntityDecoder
           for {
             passwords <- req.as[PasswordValidation]
             result    <- service.validateConfirmPassword(passwords)
             res       <- result.fold(Ok(ValidationError("")))(Ok(_))
           } yield res
-        }
+
+        case req @ POST -> Root / "category-image-link" =>
+          for {
+            categoryImageLink <- req.as[String]
+            result <- service.validateCategoryImageLink(categoryImageLink)
+            res <- result.fold(Ok(ValidationError("")))(Ok(_))
+          } yield res
+
+        case req @ POST -> Root / "category-title" =>
+          for {
+            categoryTitle <- req.as[String]
+            result <- service.validateCategoryTitle(categoryTitle)
+            res <- result.fold(Ok(ValidationError("")))(Ok(_))
+          } yield res
       }
 
       override protected def serviceRoutes: HttpRoutes[F] = endpoints

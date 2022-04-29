@@ -21,17 +21,21 @@ trait ValidationService[F[_]] {
   def validatePassword(password: String): F[Option[ValidationError]]
 
   def validateConfirmPassword(passwords: PasswordValidation): F[Option[ValidationError]]
+
+  def validateCategoryImageLink(name: String): F[Option[ValidationError]]
+
+  def validateCategoryTitle(title: String): F[Option[ValidationError]]
 }
 
 object ValidationService {
   def of[F[_]: Sync](userRepository: UserRepository[ConnectionIO], transactor: Transactor[F]): ValidationService[F] =
     new ValidationService[F] {
       override def validateName(name: String): F[Option[ValidationError]] =
-        (if (name.nonEmpty && name.length < 30) none[ValidationError]
+        (if (name.nonEmpty && name.length <= 30) none[ValidationError]
          else ValidationError("Name length should be between 1 and 30 characters").some).pure[F]
 
       override def validateLastName(lastName: String): F[Option[ValidationError]] =
-        (if (lastName.nonEmpty && lastName.length < 30) none[ValidationError]
+        (if (lastName.nonEmpty && lastName.length <= 30) none[ValidationError]
          else ValidationError("Last name length should be between 1 and 30 characters").some).pure[F]
 
       override def validateUsername(username: String): F[Option[ValidationError]] = {
@@ -40,7 +44,7 @@ object ValidationService {
           afterRegex <- (if (usernameRegex.matches(username)) none
                          else
                            ValidationError(
-                             "Username name length should be between 6 and 30 characters. Contains letters, number, point and underscore"
+                             "Username name length should be between 6 and 20 characters. Contains letters, number, point and underscore"
                            ).some).pure[ConnectionIO]
           usernames <- userRepository.selectLogins
           res <- afterRegex match {
@@ -68,11 +72,19 @@ object ValidationService {
       }
 
       override def validatePassword(password: String): F[Option[ValidationError]] =
-        (if (password.length >= 8 && password.length < 30) none[ValidationError]
+        (if (password.length >= 8 && password.length <= 30) none[ValidationError]
         else ValidationError("Password should be between 8 and 30 characters").some).pure[F]
 
       override def validateConfirmPassword(passwords: PasswordValidation): F[Option[ValidationError]] =
         (if (passwords.password == passwords.confirm) none[ValidationError]
         else ValidationError("Password mismatch").some).pure[F]
+
+      override def validateCategoryImageLink(link: String): F[Option[ValidationError]] =
+        (if (link.nonEmpty) none[ValidationError]
+        else ValidationError("Cannot be empty").some).pure[F]
+
+      override def validateCategoryTitle(title: String): F[Option[ValidationError]] =
+        (if (title.nonEmpty && title.length <= 10) none[ValidationError]
+        else ValidationError("Length should be between 1 and 10").some).pure[F]
     }
 }
